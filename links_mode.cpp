@@ -57,14 +57,8 @@ int find_person(Person *p, std::vector<std::string> visited, std::string s, int 
     return deep;
 }
 
-void links(int argc, char *argv[])
+std::vector<Person *> create_graph(std::vector<std::string> file)
 {
-    std::vector<std::string> file = file_to_vector(argv[2]);
-    std::string person1 = argv[3];
-    std::string person2 = argv[4];
-
-    // handling error
-
     std::vector<Person *> friends;
 
     for (auto line : file)
@@ -97,6 +91,33 @@ void links(int argc, char *argv[])
         p1->friends.push_back(p2);
         p2->friends.push_back(p1);
     }
+    return friends;
+}
+
+void print_graph(std::vector<Person *> friends)
+{
+    for (auto person : friends)
+    {
+        std::cout << person->name << std::endl;
+        std::cout << "friends: ";
+        for (auto friend_ : person->friends)
+        {
+            std::cout << friend_->name << ", ";
+        }
+        std::cout << std::endl;
+        std::cout << std::endl;
+    }
+}
+
+void links(int argc, char *argv[])
+{
+    std::vector<std::string> file = file_to_vector(argv[2]);
+    std::string person1 = argv[3];
+    std::string person2 = argv[4];
+
+    // handling error
+
+    std::vector<Person *> friends = create_graph(file);
 
     std::cout << "Degree of separation between " << person1 << " and " << person2 << ": ";
 
@@ -109,14 +130,6 @@ void links(int argc, char *argv[])
             visited.push_back(person->name);
             deep = find_person(person, visited, person2, 0);
         }
-        // std::cout << person->name << std::endl;
-        // std::cout << "friends: ";
-        // for (auto friend_ : person->friends)
-        // {
-        //     std::cout << friend_->name << ", ";
-        // }
-        // std::cout << std::endl;
-        // std::cout << std::endl;
     }
     std::cout << deep << std::endl;
 
