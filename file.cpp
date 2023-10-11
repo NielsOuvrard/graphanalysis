@@ -16,6 +16,50 @@
 #include <algorithm>
 #include <iterator>
 
+//  friendships report (FR)
+//  conspiracy report (CR)
+
+// “Links” mode: it will take one file (FR) and two people as input, and displays the degree of separation
+// of these people (or -1 if they are not connected).
+
+// ./game_of_graphs --links friends_example "Vere" "Cersei Lannister"
+
+void links(int argc, char *argv[]);
+
+std::vector<std::string> file_to_vector(std::string filename)
+{
+    std::ifstream inputFile(filename);
+
+    // Check if the file was successfully opened
+    if (!inputFile.is_open())
+    {
+        std::cerr << "Failed to open the file." << std::endl;
+        return std::vector<std::string>();
+    }
+
+    // Create a vector to store the lines from the file
+    std::vector<std::string> lines;
+
+    // Read lines from the file and store them in the vector
+    std::string line;
+    while (std::getline(inputFile, line))
+    {
+        lines.push_back(line);
+    }
+
+    // Close the file
+    inputFile.close();
+    return lines;
+}
+
+// error handling
+// file plot in frendship report
+// no file
+// person does not exist, queen does not exist
+// is friend with himself
+// no "is friend with" or "is plotting with"
+// if everyone in plot file exists in friendship file
+
 void help(void)
 {
     std::cout << "USAGE" << std::endl;
@@ -40,6 +84,11 @@ int main(int argc, char **argv)
     {
         std::cerr << "Invalid number of arguments" << std::endl;
         return 1;
+    }
+
+    if (std::string(argv[1]) == "--links")
+    {
+        links(argc, argv);
     }
 
     return 0;
