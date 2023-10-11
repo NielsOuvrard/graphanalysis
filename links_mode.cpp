@@ -54,11 +54,6 @@ int find_person(Person *p, std::vector<std::string> visited, std::string s, int 
             return find_person(friend_, visited, s, deep + 1);
         }
     }
-    // for (int i = 0; i < p->friends.size(); i++)
-    // {
-    //     if (p->friends[i]->name != me)
-    //         return find_person(p->friends[i], me, s, deep + 1);
-    // }
     return deep;
 }
 
@@ -74,8 +69,6 @@ void links(int argc, char *argv[])
 
     for (auto line : file)
     {
-        // Jon Snow is friends with Sansa Stark
-        // std::cout << line << std::endl;
         std::string friend1 = line.substr(0, line.find(" is friends with "));
         std::string friend2 = line.substr(line.find(" is friends with ") + 17, line.length());
 
@@ -105,7 +98,7 @@ void links(int argc, char *argv[])
         p2->friends.push_back(p1);
     }
 
-    // std::cout << "Degree of separation between " << person1 << " and " << person2 << ": ";
+    std::cout << "Degree of separation between " << person1 << " and " << person2 << ": ";
 
     int deep = -1;
     for (auto person : friends)
