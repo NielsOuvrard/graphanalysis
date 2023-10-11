@@ -116,8 +116,19 @@ void links(int argc, char *argv[])
     std::string person2 = argv[4];
 
     // handling error
+    if (person1 == person2)
+    {
+        std::cout << "Degree of separation between " << person1 << " and " << person2 << ": 0" << std::endl;
+        return;
+    }
 
     std::vector<Person *> friends = create_graph(file);
+
+    if (!exists(friends, person1) || !exists(friends, person2))
+    {
+        std::cout << "Degree of separation between " << person1 << " and " << person2 << ": -1" << std::endl;
+        return;
+    }
 
     std::cout << "Degree of separation between " << person1 << " and " << person2 << ": ";
 
