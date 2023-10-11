@@ -109,7 +109,13 @@ void print_graph(std::vector<Person *> friends)
     }
 }
 
-void links(int argc, char *argv[])
+int print_separation(std::string person1, std::string person2, int deep)
+{
+    std::cout << "Degree of separation between " << person1 << " and " << person2 << ": " << deep << std::endl;
+    return deep;
+}
+
+int links(int argc, char *argv[])
 {
     std::vector<std::string> file = file_to_vector(argv[2]);
     std::string person1 = argv[3];
@@ -117,18 +123,12 @@ void links(int argc, char *argv[])
 
     // handling error
     if (person1 == person2)
-    {
-        std::cout << "Degree of separation between " << person1 << " and " << person2 << ": 0" << std::endl;
-        return;
-    }
+        return print_separation(person1, person2, 0);
 
     std::vector<Person *> friends = create_graph(file);
 
     if (!exists(friends, person1) || !exists(friends, person2))
-    {
-        std::cout << "Degree of separation between " << person1 << " and " << person2 << ": -1" << std::endl;
-        return;
-    }
+        return print_separation(person1, person2, -1);
 
     std::cout << "Degree of separation between " << person1 << " and " << person2 << ": ";
 
@@ -142,11 +142,12 @@ void links(int argc, char *argv[])
             deep = find_person(person, visited, person2, 0);
         }
     }
-    std::cout << deep << std::endl;
+    print_separation(person1, person2, deep);
 
     // free memory
     for (auto person : friends)
     {
         delete person;
     }
+    return 0;
 }

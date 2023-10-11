@@ -24,7 +24,7 @@
 
 // ./game_of_graphs --links friends_example "Vere" "Cersei Lannister"
 
-void links(int argc, char *argv[]);
+int links(int argc, char *argv[]);
 
 std::vector<std::string> file_to_vector(std::string filename)
 {
