@@ -40,11 +40,17 @@ int links(int argc, char *argv[])
         if (person->name == person1)
             start = person;
     }
-    if (!start)// impossible, checked before
+    Person *target = nullptr;
+    for (auto person : friends)
+    {
+        if (person->name == person2)
+            target = person;
+    }
+    if (!start || !target)// impossible, checked before
         return 0;
     std::vector<std::string> visited;
-    int deep = find_person(start, visited, person2);
-    print_separation(person1, person2, deep - 1);
+    int deep = find_length_of_shortest_path_between_two_nodes_Person(start, target);
+    print_separation(person1, person2, deep);
 
     // free memory
     for (auto person : friends)

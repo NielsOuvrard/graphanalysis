@@ -59,8 +59,8 @@ std::vector<std::vector<int>> create_matrix_from_relationships (std::vector<Pers
         for (auto target : friends)
         {
             std::vector<std::string> visited;
-            int deep = find_person(start, visited, target->name);
-            new_line.push_back(deep != 0 ? deep - 1 : 0);
+            int deep = find_length_of_shortest_path_between_two_nodes_Person(start, target);
+            new_line.push_back(deep);
         }
         matrix.push_back(new_line);
         i++;
@@ -70,18 +70,20 @@ std::vector<std::vector<int>> create_matrix_from_relationships (std::vector<Pers
 
 void print_relationships_matrix(std::vector<std::vector<int>> matrix)
 {
+    std::cout << "Relationships:\n";
     for (auto y : matrix)
     {
-        for (auto x : y)
+        for (int i = 0; i < y.size(); i++)
         {
-            std::cout << x;
+            std::cout << y[i];
+            if (i + 1 != y.size())
+                std::cout << " ";
         }
         std::cout << std::endl;
     }
     std::cout << std::endl;
 }
 
-int print_separation(std::string person1, std::string person2, int deep);
 
 void plots(int argc, char *argv[])
 {
@@ -90,29 +92,12 @@ void plots(int argc, char *argv[])
     int length_of_friendship_paths = std::stoi(argv[4]);
 
     std::vector<Person *> friends = create_graph(file_friendship);
-
     std::sort(friends.begin(), friends.end() , compareByName);
-
     print_names(friends);
 
-
-    Person *start = nullptr;
-    for (auto person : friends)
-    {
-        if (person->name == QUEEN)
-            start = person;
-    }
-    if (!start)// impossible, checked before
-        return;
-    std::vector<std::string> visited;
-    int deep = find_person(start, visited, "Vere");
-    print_separation(start->name, "Vere", deep - 1);
-
-
-
+    std::cout << std::endl;
 
     std::vector<std::vector<int>> matrix = create_matrix_from_relationships(friends);
-
     print_relationships_matrix(matrix);
 
      // free memory

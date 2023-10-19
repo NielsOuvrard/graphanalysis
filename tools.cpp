@@ -21,54 +21,42 @@ bool exists(std::vector<Person *> v, std::string s)
     return false;
 }
 
-/**
- * @brief Find the shortest link between two persons in a social network.
- *
- * This function explores the social network graph to find the shortest link between two persons.
- *
- * @param start - The starting person to search from.
- * @param visited - A vector to keep track of visited persons to avoid revisiting.
- * @param target - The name of the person to find.
- * @param deep - The current depth or distance from the starting person.
- *
- * @return The shortest link (depth) between the starting person and the target person,
- * or -1 if the target person is not found.
- */
-int find_person(Person *start, std::vector<std::string> &visited, const std::string &target, int deep)
+int find_length_of_shortest_path_between_two_nodes_Person(Person *start, Person *end)
 {
-    // Check if the current person is the target person.
-    if (start->name == target)
+    if (start->name == end->name)
     {
-        return deep; // Return the depth when the target is found.
+        return 0; // The two nodes are the same.
     }
 
-    // Initialize the shortest link to a large value.
-    int shortestLink = -1;
+    std::queue<std::pair<Person *, int>> bfsQueue;
+    std::vector<Person *> visited;
 
-    // Iterate through the friends of the current person.
-    for (auto friend_ : start->friends)
+    bfsQueue.push({start, 0});
+    visited.push_back(start);
+
+    while (!bfsQueue.empty())
     {
-        // Check if this friend has already been visited.
-        if (std::find(visited.begin(), visited.end(), friend_->name) == visited.end())
+        Person *current = bfsQueue.front().first;
+        int distance = bfsQueue.front().second;
+        bfsQueue.pop();
+
+        for (Person *friendNode : current->friends)
         {
-            // Mark the friend as visited.
-            visited.push_back(friend_->name);
-
-            // Recursively search for the target person in the friend's network.
-            int result = find_person(friend_, visited, target, deep + 1);
-
-            // If the result is not -1, the target person was found in this branch.
-            if (result != -1)
+            if (friendNode->name == end->name)
             {
-                if (shortestLink == -1 || result < shortestLink)
-                {
-                    shortestLink = result; // Update the shortest link found.
-                }
+                return distance + 1; // Found the target node.
+            }
+
+            if (std::find(visited.begin(), visited.end(), friendNode) == visited.end())
+            {
+                bfsQueue.push({friendNode, distance + 1});
+                visited.push_back(friendNode);
             }
         }
     }
 
-    return shortestLink; // Return the shortest link found, or -1 if no path is found.
+    // If no path is found, return a value to indicate that.
+    return -1;
 }
 
 std::vector<Person *> create_graph(std::vector<std::string> file)
