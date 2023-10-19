@@ -54,6 +54,10 @@ std::vector<std::string> file_to_vector(std::string filename)
 // no "is friend with" or "is plotting with"
 // if everyone in plot file exists in friendship file
 
+// links- empty file
+// plots - empty file
+// inconsistent content
+
 void help(void)
 {
     std::cout << "USAGE" << std::endl;
@@ -82,12 +86,12 @@ int main(int argc, char **argv)
 
     if (std::string(argv[1]) == "--links")
     {
-        links(argc, argv);
+        return links(argc, argv) ? 0 : 84;
     }
     else if (std::string(argv[1]) == "--plots")
     {
-        plots(argc, argv);
+        return plots(argc, argv) ? 0 : 84;
     }
 
-    return 0;
+    return 84;
 }

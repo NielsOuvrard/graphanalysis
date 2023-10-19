@@ -20,9 +20,9 @@
 class Person
 {
 public:
-  std::string name;
-  std::vector<Person *> friends;
-  // std::vector<Person> plots;
+    std::string name;
+    std::vector<Person *> friends;
+    std::vector<Person *> plots;
 };
 
 bool exists(std::vector<Person *> v, std::string s);
@@ -35,6 +35,6 @@ void print_graph(std::vector<Person *> friends);
 
 std::vector<std::string> file_to_vector(std::string filename);
 
-void plots(int argc, char *argv[]);
+bool plots(int argc, char *argv[]);
 
-int links(int argc, char *argv[]);
+bool links(int argc, char *argv[]);

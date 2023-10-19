@@ -11,13 +11,13 @@
 
 #include "file.hpp"
 
-int print_separation(std::string person1, std::string person2, int deep)
+bool print_separation(std::string person1, std::string person2, int deep)
 {
     std::cout << "Degree of separation between " << person1 << " and " << person2 << ": " << deep << std::endl;
-    return deep;
+    return true;
 }
 
-int links(int argc, char *argv[])
+bool links(int argc, char *argv[])
 {
     std::vector<std::string> file = file_to_vector(argv[2]);
     std::string person1 = argv[3];
@@ -47,7 +47,7 @@ int links(int argc, char *argv[])
             target = person;
     }
     if (!start || !target)// impossible, checked before
-        return 0;
+        return false;
     std::vector<std::string> visited;
     int deep = find_length_of_shortest_path_between_two_nodes_Person(start, target);
     print_separation(person1, person2, deep);
@@ -57,5 +57,5 @@ int links(int argc, char *argv[])
     {
         delete person;
     }
-    return 0;
+    return true;
 }

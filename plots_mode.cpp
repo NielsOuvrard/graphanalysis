@@ -17,8 +17,8 @@
 // whom). Using this graph, you will need to stop people plotting against the Queen (called direct enemies),
 // by plotting against them.
 
-// To do so, you need to contact every “close” friend to the Crown that is plotting against these enemies. If an
-// enemy has only non-close friends plotting against them, you can still convince these non-close friends by
+// To do so, you need to contact every “close” friend to the Crown that is plotting against these enemies.
+// If an enemy has only non-close friends plotting against them, you can still convince these non-close friends by
 // plotting against their enemies.
 // * You will need to check who’s plotting against them. These people are “indirect enemies”, and just like your
 // direct enemies, you can plot with their enemies if the latters are “close” friends. If you can plot against at
@@ -29,13 +29,15 @@
 
 // You must display the chain of treason that results on saving the Queen, sorted from the shortest to the
 // longest chains. For each chain of same length, you must display them in alphabetical order.
-// If you can conspire with multiple allies, choose in prority the ones that are closest to the Queen, then those
+
+// If you can conspire with multiple allies, choose in priority the ones that are closest to the Queen, then those
 // who are the less threatening towards you (i.e.: less flagged as direct or indirect enemies) and finally take the
 // first one in alphabetical order.
 // If you can successfully plot against all the direct enemies, you must print “The Crown is safe !”, otherwise
 // you need to betray the Crown and must display “There is only one way out: treason !”.
 
-bool compareByName(const Person* a, const Person* b) {
+bool compareByName(const Person *a, const Person *b)
+{
     return a->name < b->name;
 }
 
@@ -48,22 +50,18 @@ void print_names(std::vector<Person *> friends)
     }
 }
 
-std::vector<std::vector<int>> create_matrix_from_relationships (std::vector<Person *> friends)
+std::vector<std::vector<int>> create_matrix_from_relationships(std::vector<Person *> friends)
 {
     std::vector<std::vector<int>> matrix;
 
-    uint16_t i = 0;
     for (auto start : friends)
     {
         std::vector<int> new_line;
         for (auto target : friends)
         {
-            std::vector<std::string> visited;
-            int deep = find_length_of_shortest_path_between_two_nodes_Person(start, target);
-            new_line.push_back(deep);
+            new_line.push_back(find_length_of_shortest_path_between_two_nodes_Person(start, target));
         }
         matrix.push_back(new_line);
-        i++;
     }
     return matrix;
 }
@@ -87,15 +85,89 @@ void print_relationships_matrix(std::vector<std::vector<int>> matrix, int max_le
     std::cout << std::endl;
 }
 
+bool fill_plots(std::vector<Person *> friends, std::vector<std::string> file_conspiracies)
+{
+    for (auto &line : file_conspiracies)
+    {
+        std::string enemy1 = line.substr(0, line.find(" is plotting against "));
+        std::string enemy2 = line.substr(line.find(" is plotting against ") + 21, line.length());
 
-void plots(int argc, char *argv[])
+        Person *p1 = nullptr;
+        Person *p2 = nullptr;
+        for (auto &person : friends)
+        {
+            if (person->name == enemy1)
+                p1 = person;
+            else if (person->name == enemy2)
+                p2 = person;
+        }
+        if (!p1 || !p2)
+        {
+            std::cout << enemy1 << " or " << enemy2 << " didn't found\n";
+            return false;
+        }
+        p1->plots.push_back(p2);
+    }
+    return true;
+}
+
+void prints_plots(std::vector<Person *> friends)
+{
+    for (auto person : friends)
+    {
+        if (person->plots.size() != 0)
+        {
+            std::cout << person->name << " is plotting against :\n";
+            for (auto enemy : person->plots)
+            {
+                std::cout << "\t" << enemy->name << std::endl;
+            }
+            std::cout << std::endl;
+        }
+    }
+}
+
+void stop_killing_queen(std::vector<Person *> people, Person *queen)
+{
+    for (auto &queen_enemy : people)
+    {
+        for (auto &target : queen_enemy->plots)
+        {
+            if (target->name == QUEEN)
+            {
+                // std::cout << queen_enemy->name << " want to kill the queen\n";
+                // either, kill him
+                // either, find someone to kill him
+                for (auto &queen_friend : people)
+                {
+                    for (auto &target_of_queen_friend : queen_friend->plots)
+                    {
+                        if (target_of_queen_friend->name == queen_enemy->name)
+                        {
+                            std::cout << target_of_queen_friend->name << " -> " << queen_enemy->name << std::endl;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+bool plots(int argc, char *argv[])
 {
     std::vector<std::string> file_friendship = file_to_vector(argv[2]);
-    std::vector<std::string> file_conspiracies = file_to_vector(argv[2]);
+    std::vector<std::string> file_conspiracies = file_to_vector(argv[3]);
     int max_length_of_friendship_paths = std::stoi(argv[4]);
 
     std::vector<Person *> friends = create_graph(file_friendship);
-    std::sort(friends.begin(), friends.end() , compareByName);
+
+    if (!fill_plots(friends, file_conspiracies))
+    {
+        std::cout << "error plot to unknown person\n";
+        return false;
+    }
+
+    std::sort(friends.begin(), friends.end(), compareByName);
     print_names(friends);
 
     std::cout << std::endl;
@@ -103,9 +175,19 @@ void plots(int argc, char *argv[])
     std::vector<std::vector<int>> matrix = create_matrix_from_relationships(friends);
     print_relationships_matrix(matrix, max_length_of_friendship_paths);
 
-     // free memory
-     for (auto person : friends)
-     {
-         delete person;
-     }
+    Person *queen = nullptr;
+    for (auto &person : friends)
+    {
+        if (person->name == QUEEN)
+            queen = person;
+    }
+
+    // stop_killing_queen(friends, queen);
+
+    // free memory
+    for (auto person : friends)
+    {
+        delete person;
+    }
+    return true;
 }

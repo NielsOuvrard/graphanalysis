@@ -73,8 +73,8 @@ std::vector<Person *> create_graph(std::vector<std::string> file)
             p->name = friend2;
             friends.push_back(p);
         }
-        Person *p1;
-        Person *p2;
+        Person *p1 = nullptr;
+        Person *p2 = nullptr;
 
         for (auto &person : friends)
         {
