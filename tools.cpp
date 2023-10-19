@@ -23,11 +23,6 @@ bool exists(std::vector<Person *> v, std::string s)
 
 int find_length_of_shortest_path_between_two_nodes_Person(Person *start, Person *end)
 {
-    if (start->name == end->name)
-    {
-        return 0; // The two nodes are the same.
-    }
-
     std::queue<std::pair<Person *, int>> bfsQueue;
     std::vector<Person *> visited;
 
@@ -44,7 +39,7 @@ int find_length_of_shortest_path_between_two_nodes_Person(Person *start, Person 
         {
             if (friendNode->name == end->name)
             {
-                return distance + 1; // Found the target node.
+                return distance + 1; // Found the target
             }
 
             if (std::find(visited.begin(), visited.end(), friendNode) == visited.end())
@@ -54,9 +49,7 @@ int find_length_of_shortest_path_between_two_nodes_Person(Person *start, Person 
             }
         }
     }
-
-    // If no path is found, return a value to indicate that.
-    return -1;
+    return -1; // If no path is found, return -1
 }
 
 std::vector<Person *> create_graph(std::vector<std::string> file)
