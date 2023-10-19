@@ -19,7 +19,6 @@
 
 // ./game_of_graphs --links friends_example "Vere" "Cersei Lannister"
 
-
 std::vector<std::string> file_to_vector(std::string filename)
 {
     std::ifstream inputFile(filename);
@@ -28,7 +27,7 @@ std::vector<std::string> file_to_vector(std::string filename)
     if (!inputFile.is_open())
     {
         std::cerr << "Failed to open the file." << std::endl;
-        return std::vector<std::string>();
+        exit(84);
     }
 
     // Create a vector to store the lines from the file
@@ -54,9 +53,10 @@ std::vector<std::string> file_to_vector(std::string filename)
 // no "is friend with" or "is plotting with"
 // if everyone in plot file exists in friendship file
 
+// inconsistent content
 // links- empty file
 // plots - empty file
-// inconsistent content
+// unknown conspirator
 
 void help(void)
 {
@@ -81,7 +81,7 @@ int main(int argc, char **argv)
     else if (argc != 5)
     {
         std::cerr << "Invalid number of arguments" << std::endl;
-        return 1;
+        return 84;
     }
 
     if (std::string(argv[1]) == "--links")
