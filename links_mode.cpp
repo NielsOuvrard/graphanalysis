@@ -32,8 +32,6 @@ bool links(int argc, char *argv[])
     if (!exists(friends, person1) || !exists(friends, person2))
         return print_separation(person1, person2, -1);
 
-    std::cout << "Degree of separation between " << person1 << " and " << person2 << ": ";
-
     Person *start = nullptr;
     for (auto person : friends)
     {
