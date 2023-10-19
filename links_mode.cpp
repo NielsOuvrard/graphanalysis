@@ -36,26 +36,47 @@ bool exists(std::vector<Person *> v, std::string s)
     return false;
 }
 
-int find_person(Person *p, std::vector<std::string> visited, std::string s, int deep)
-{
-    for (auto friend_ : p->friends)
-    {
-        if (friend_->name == s)
-            return deep;
-        bool visited_ = false;
-        for (auto v : visited)
-        {
-            if (friend_->name == v)
-                visited_ = true;
-        }
-        if (!visited_)
-        {
+
+/**
+ * @brief Find the shortest link between two persons in a social network.
+ *
+ * This function explores the social network graph to find the shortest link between two persons.
+ *
+ * @param start - The starting person to search from.
+ * @param visited - A vector to keep track of visited persons to avoid revisiting.
+ * @param target - The name of the person to find.
+ * @param deep - The current depth or distance from the starting person.
+ *
+ * @return The shortest link (depth) between the starting person and the target person,
+ * or -1 if the target person is not found.
+ */
+int find_person(Person* start, std::vector<std::string> visited, const std::string& target, int deep = 0) {
+    // Check if the current person is the target person.
+    if (start->name == target) {
+        return deep; // Return the depth when the target is found.
+    }
+
+    // Iterate through the friends of the current person.
+    for (auto friend_ : start->friends) {
+        // Check if this friend has already been visited.
+        if (std::find(visited.begin(), visited.end(), friend_->name) == visited.end()) {
+            // Mark the friend as visited.
             visited.push_back(friend_->name);
-            return find_person(friend_, visited, s, deep + 1);
+
+            // Recursively search for the target person in the friend'target network.
+            int result = find_person(friend_, visited, target, deep + 1);
+
+            // If the result is not -1, the target person was found in this branch.
+            if (result != -1) {
+                return result; // Return the shortest link found.
+            }
         }
     }
-    return deep;
+
+    // If the target person is not found in this branch, return -1.
+    return -1;
 }
+
 
 std::vector<Person *> create_graph(std::vector<std::string> file)
 {
@@ -132,17 +153,17 @@ int links(int argc, char *argv[])
 
     std::cout << "Degree of separation between " << person1 << " and " << person2 << ": ";
 
-    int deep = -1;
+    Person *start = nullptr;
     for (auto person : friends)
     {
         if (person->name == person1)
-        {
-            std::vector<std::string> visited;
-            visited.push_back(person->name);
-            deep = find_person(person, visited, person2, 0);
-        }
+            start = person;
     }
-    print_separation(person1, person2, deep);
+    if (!start)// impossible, checked before
+        return 0;
+    std::vector<std::string> visited;
+    int deep = find_person(start, visited, person2);
+    print_separation(person1, person2, deep - 1);
 
     // free memory
     for (auto person : friends)
