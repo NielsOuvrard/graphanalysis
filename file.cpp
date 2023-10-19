@@ -9,12 +9,7 @@
 **
 */
 
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <vector>
-#include <algorithm>
-#include <iterator>
+#include "file.hpp"
 
 //  friendships report (FR)
 //  conspiracy report (CR)
@@ -24,7 +19,6 @@
 
 // ./game_of_graphs --links friends_example "Vere" "Cersei Lannister"
 
-int links(int argc, char *argv[]);
 
 std::vector<std::string> file_to_vector(std::string filename)
 {
@@ -89,6 +83,10 @@ int main(int argc, char **argv)
     if (std::string(argv[1]) == "--links")
     {
         links(argc, argv);
+    }
+    else if (std::string(argv[1]) == "--plots")
+    {
+        plots(argc, argv);
     }
 
     return 0;

@@ -21,5 +21,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: $(NAME) clean fclean all re custom
-
+.PHONY: $(NAME) clean fclean all re
