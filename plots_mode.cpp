@@ -68,14 +68,17 @@ std::vector<std::vector<int>> create_matrix_from_relationships (std::vector<Pers
     return matrix;
 }
 
-void print_relationships_matrix(std::vector<std::vector<int>> matrix)
+void print_relationships_matrix(std::vector<std::vector<int>> matrix, int max_length_of_friendship_paths)
 {
     std::cout << "Relationships:\n";
     for (auto y : matrix)
     {
         for (int i = 0; i < y.size(); i++)
         {
-            std::cout << y[i];
+            if (y[i] <= max_length_of_friendship_paths)
+                std::cout << y[i];
+            else
+                std::cout << "0";
             if (i + 1 != y.size())
                 std::cout << " ";
         }
@@ -89,7 +92,7 @@ void plots(int argc, char *argv[])
 {
     std::vector<std::string> file_friendship = file_to_vector(argv[2]);
     std::vector<std::string> file_conspiracies = file_to_vector(argv[2]);
-    int length_of_friendship_paths = std::stoi(argv[4]);
+    int max_length_of_friendship_paths = std::stoi(argv[4]);
 
     std::vector<Person *> friends = create_graph(file_friendship);
     std::sort(friends.begin(), friends.end() , compareByName);
@@ -98,7 +101,7 @@ void plots(int argc, char *argv[])
     std::cout << std::endl;
 
     std::vector<std::vector<int>> matrix = create_matrix_from_relationships(friends);
-    print_relationships_matrix(matrix);
+    print_relationships_matrix(matrix, max_length_of_friendship_paths);
 
      // free memory
      for (auto person : friends)
