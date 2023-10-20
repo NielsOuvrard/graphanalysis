@@ -20,6 +20,9 @@ bool contact_close_queen_friends(
         std::vector<int> &attack,
         uint16_t deep)
 {
+    if (deep > 40) {
+        return true;
+    }
     for (int i = 0; i < friendships.size(); i++) {
         if (friendships[i][id_queen] >= n) {
             // i = close friend
