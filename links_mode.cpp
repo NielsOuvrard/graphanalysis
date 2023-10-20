@@ -17,7 +17,7 @@ bool print_separation(std::string person1, std::string person2, int deep)
     return true;
 }
 
-bool links(int argc, char *argv[])
+bool links(char *argv[])
 {
     std::vector<std::string> file = file_to_vector(argv[2]);
     std::string person1 = argv[3];

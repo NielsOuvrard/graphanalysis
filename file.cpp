@@ -80,10 +80,10 @@ int main(int argc, char **argv)
     }
 
     if (std::string(argv[1]) == "--links") {
-        return links(argc, argv) ? 0 : 84;
+        return links(argv) ? 0 : 84;
     }
     else if (std::string(argv[1]) == "--plots") {
-        return plots(argc, argv) ? 0 : 84;
+        return plots(argv) ? 0 : 84;
     }
 
     return 84;

@@ -16,14 +16,17 @@
 // by plotting against them.
 
 // To do so, you need to contact every “close” friend to the Crown that is plotting against these enemies.
-// If an enemy has only non-close friends plotting against them, you can still convince these non-close friends by
-// plotting against their enemies.
+
+// ! If an enemy has only non-close friends plotting against them, you can still convince these non-close friends by
+// ! plotting against their enemies.
+
 // * You will need to check who’s plotting against them. These people are “indirect enemies”, and just like your
 // direct enemies, you can plot with their enemies if the latters are “close” friends. If you can plot against at
 // least one of their enemies, then this “non-close friend” will help you, just like a “close friend”.
 // You must continue until finding a way to plot (directly or indirectly) against all your direct enemies
 
 // * A person is considered a “close friend” if their friendship level relative to the Queen is less than or equal to n.
+
 
 // You must display the chain of treason that results on saving the Queen, sorted from the shortest to the
 // longest chains. For each chain of same length, you must display them in alphabetical order.
@@ -47,13 +50,13 @@ void print_names(std::vector<Person *> friends)
     }
 }
 
-void print_relationships_matrix(std::vector<std::vector<int>> matrix, int max_length_of_friendship_paths)
+void print_relationships_matrix(std::vector<std::vector<int>> matrix)
 {
     std::cout << "Relationships:\n";
     for (auto y: matrix) {
         for (int i = 0; i < y.size(); i++) {
             // std::cout << "\033[1;31m" << y[i] << "\033[0m";
-            if (y[i] > 0 && y[i] <= max_length_of_friendship_paths)
+            if (y[i] > 0)
                 std::cout << y[i];
             else
                 std::cout << "0";

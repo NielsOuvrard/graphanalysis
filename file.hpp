@@ -42,9 +42,9 @@ void floydWarshall(std::vector<std::vector<int>> &A);
 
 // * modes
 
-bool plots(int argc, char *argv[]);
+bool plots(char *argv[]);
 
-bool links(int argc, char *argv[]);
+bool links(char *argv[]);
 
 // * plots tools
 
@@ -54,7 +54,7 @@ bool compareByName(const Person *a, const Person *b);
 
 void print_names(std::vector<Person *> friends);
 
-void print_relationships_matrix(std::vector<std::vector<int>> matrix, int max_length_of_friendship_paths);
+void print_relationships_matrix(std::vector<std::vector<int>> matrix);
 
 bool fill_plots(std::vector<Person *> friends, std::vector<std::string> file_conspiracies);
 
