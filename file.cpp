@@ -54,9 +54,8 @@ std::vector<std::string> file_to_vector(std::string filename)
 // if everyone in plot file exists in friendship file
 
 // inconsistent content
-// links- empty file
+// links - empty file
 // plots - empty file
-// unknown conspirator
 
 void help(void)
 {

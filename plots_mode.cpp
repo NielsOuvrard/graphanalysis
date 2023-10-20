@@ -127,6 +127,36 @@ void prints_plots(std::vector<Person *> friends)
     }
 }
 
+void killing_the_killer(std::vector<Person *> people, Person *enemy, Person *queen)
+{
+    // If an enemy has only non-close friends plotting against them
+    // TODO check non-close friends with n
+    /*
+    for (auto &queen_friend : queen->friends)
+    {
+        for (auto &target_of_queen_friend : queen_friend->plots)
+        {
+            // enemy
+            if (target_of_queen_friend->name == queen_enemy->name)
+            {
+                std::cout << target_of_queen_friend->name << " -> " << queen_enemy->name << std::endl;
+            }
+        }
+    }
+    */
+    // If an enemy has only non-close friends plotting against them
+    for (auto &person : people)
+    {
+        for (auto &enemy_of : person->plots)
+        {
+            if (enemy_of->name == enemy->name)
+            {
+                // convince these non-close friends by plotting against their enemies.
+            }
+        }
+    }
+}
+
 void stop_killing_queen(std::vector<Person *> people, Person *queen)
 {
     for (auto &queen_enemy : people)
@@ -138,7 +168,7 @@ void stop_killing_queen(std::vector<Person *> people, Person *queen)
                 // std::cout << queen_enemy->name << " want to kill the queen\n";
                 // either, kill him
                 // either, find someone to kill him
-                for (auto &queen_friend : people)
+                for (auto &queen_friend : queen->friends)
                 {
                     for (auto &target_of_queen_friend : queen_friend->plots)
                     {
@@ -152,6 +182,34 @@ void stop_killing_queen(std::vector<Person *> people, Person *queen)
         }
     }
 }
+std::vector<std::vector<int>> fn_adjacent_matrix(std::vector<Person *> people)
+{
+    std::vector<std::vector<int>> matrix;
+    for (auto &person : people)
+    {
+        std::vector<int> line;
+        for (auto &other_person : people)
+        {
+            bool is_friend_of_him = false;
+            for (auto &friend_of_him : person->friends)
+            {
+                if (other_person->name == friend_of_him->name)
+                {
+                    line.push_back(1);
+                    is_friend_of_him = true;
+                }
+            }
+            if (!is_friend_of_him)
+            {
+                line.push_back(0);
+            }
+        }
+        matrix.push_back(line);
+    }
+    return matrix;
+}
+
+void floydWarshall(std::vector<std::vector<int>> &A);
 
 bool plots(int argc, char *argv[])
 {
@@ -159,33 +217,38 @@ bool plots(int argc, char *argv[])
     std::vector<std::string> file_conspiracies = file_to_vector(argv[3]);
     int max_length_of_friendship_paths = std::stoi(argv[4]);
 
-    std::vector<Person *> friends = create_graph(file_friendship);
+    std::vector<Person *> people = create_graph(file_friendship);
 
-    if (!fill_plots(friends, file_conspiracies))
+    if (!fill_plots(people, file_conspiracies))
     {
         std::cout << "error plot to unknown person\n";
         return false;
     }
 
-    std::sort(friends.begin(), friends.end(), compareByName);
-    print_names(friends);
+    std::sort(people.begin(), people.end(), compareByName);
+    print_names(people);
 
     std::cout << std::endl;
 
-    std::vector<std::vector<int>> matrix = create_matrix_from_relationships(friends);
-    print_relationships_matrix(matrix, max_length_of_friendship_paths);
+    std::vector<std::vector<int>> matrix_adj = fn_adjacent_matrix(people);
+    //    print_relationships_matrix(matrix_adj, 2000);
+    floydWarshall(matrix_adj);
+    print_relationships_matrix(matrix_adj, max_length_of_friendship_paths);
+
+    //    std::vector<std::vector<int>> matrix = create_matrix_from_relationships(people);
+    //    print_relationships_matrix(matrix, max_length_of_friendship_paths);
 
     Person *queen = nullptr;
-    for (auto &person : friends)
+    for (auto &person : people)
     {
         if (person->name == QUEEN)
             queen = person;
     }
 
-    // stop_killing_queen(friends, queen);
+    // stop_killing_queen(people, queen);
 
     // free memory
-    for (auto person : friends)
+    for (auto person : people)
     {
         delete person;
     }

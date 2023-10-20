@@ -21,6 +21,38 @@ bool exists(std::vector<Person *> v, std::string s)
     return false;
 }
 
+void floydWarshall(std::vector<std::vector<int>> &A)
+{
+    int n = A.size();
+
+    // Initialize A(i, j) to infinity for pairs of vertices not directly connected
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            if (i != j && A[i][j] == 0)
+            {
+                A[i][j] = INT_MAX;
+            }
+        }
+    }
+
+    // Apply the Floyd-Warshall algorithm
+    for (int k = 0; k < n; k++)
+    {
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < n; j++)
+            {
+                if (A[i][k] != INT_MAX && A[k][j] != INT_MAX)
+                {
+                    A[i][j] = std::min(A[i][j], A[i][k] + A[k][j]);
+                }
+            }
+        }
+    }
+}
+
 int find_length_of_shortest_path_between_two_nodes_Person(Person *start, Person *end)
 {
     std::queue<std::pair<Person *, int>> bfsQueue;
