@@ -33,14 +33,12 @@ bool links(int argc, char *argv[])
         return print_separation(person1, person2, -1);
 
     Person *start = nullptr;
-    for (auto person : friends)
-    {
+    for (auto person: friends) {
         if (person->name == person1)
             start = person;
     }
     Person *target = nullptr;
-    for (auto person : friends)
-    {
+    for (auto person: friends) {
         if (person->name == person2)
             target = person;
     }
@@ -51,8 +49,7 @@ bool links(int argc, char *argv[])
     print_separation(person1, person2, deep);
 
     // free memory
-    for (auto person : friends)
-    {
+    for (auto person: friends) {
         delete person;
     }
     return true;

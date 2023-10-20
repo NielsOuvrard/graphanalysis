@@ -24,8 +24,7 @@ std::vector<std::string> file_to_vector(std::string filename)
     std::ifstream inputFile(filename);
 
     // Check if the file was successfully opened
-    if (!inputFile.is_open())
-    {
+    if (!inputFile.is_open()) {
         std::cerr << "Failed to open the file." << std::endl;
         exit(84);
     }
@@ -35,8 +34,7 @@ std::vector<std::string> file_to_vector(std::string filename)
 
     // Read lines from the file and store them in the vector
     std::string line;
-    while (std::getline(inputFile, line))
-    {
+    while (std::getline(inputFile, line)) {
         lines.push_back(line);
     }
 
@@ -72,23 +70,19 @@ void help(void)
 
 int main(int argc, char **argv)
 {
-    if (argc == 2 && std::string(argv[1]) == "--help")
-    {
+    if (argc == 2 && std::string(argv[1]) == "--help") {
         help();
         return 0;
     }
-    else if (argc != 5)
-    {
+    else if (argc != 5) {
         std::cerr << "Invalid number of arguments" << std::endl;
         return 84;
     }
 
-    if (std::string(argv[1]) == "--links")
-    {
+    if (std::string(argv[1]) == "--links") {
         return links(argc, argv) ? 0 : 84;
     }
-    else if (std::string(argv[1]) == "--plots")
-    {
+    else if (std::string(argv[1]) == "--plots") {
         return plots(argc, argv) ? 0 : 84;
     }
 

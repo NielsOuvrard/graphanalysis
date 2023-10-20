@@ -42,8 +42,7 @@ bool compareByName(const Person *a, const Person *b)
 void print_names(std::vector<Person *> friends)
 {
     std::cout << "Names:\n";
-    for (auto person : friends)
-    {
+    for (auto person: friends) {
         std::cout << person->name << std::endl;
     }
 }
@@ -51,11 +50,10 @@ void print_names(std::vector<Person *> friends)
 void print_relationships_matrix(std::vector<std::vector<int>> matrix, int max_length_of_friendship_paths)
 {
     std::cout << "Relationships:\n";
-    for (auto y : matrix)
-    {
-        for (int i = 0; i < y.size(); i++)
-        {
-            if (y[i] <= max_length_of_friendship_paths)
+    for (auto y: matrix) {
+        for (int i = 0; i < y.size(); i++) {
+            // std::cout << "\033[1;31m" << y[i] << "\033[0m";
+            if (y[i] > 0 && y[i] <= max_length_of_friendship_paths)
                 std::cout << y[i];
             else
                 std::cout << "0";
@@ -69,22 +67,19 @@ void print_relationships_matrix(std::vector<std::vector<int>> matrix, int max_le
 
 bool fill_plots(std::vector<Person *> friends, std::vector<std::string> file_conspiracies)
 {
-    for (auto &line : file_conspiracies)
-    {
+    for (auto &line: file_conspiracies) {
         std::string enemy1 = line.substr(0, line.find(" is plotting against "));
         std::string enemy2 = line.substr(line.find(" is plotting against ") + 21, line.length());
 
         Person *p1 = nullptr;
         Person *p2 = nullptr;
-        for (auto &person : friends)
-        {
+        for (auto &person: friends) {
             if (person->name == enemy1)
                 p1 = person;
             else if (person->name == enemy2)
                 p2 = person;
         }
-        if (!p1 || !p2)
-        {
+        if (!p1 || !p2) {
             std::cout << enemy1 << " or " << enemy2 << " didn't found\n";
             return false;
         }
@@ -95,13 +90,10 @@ bool fill_plots(std::vector<Person *> friends, std::vector<std::string> file_con
 
 void prints_plots(std::vector<Person *> friends)
 {
-    for (auto person : friends)
-    {
-        if (person->plots.size() != 0)
-        {
+    for (auto person: friends) {
+        if (person->plots.size() != 0) {
             std::cout << person->name << " is plotting against :\n";
-            for (auto enemy : person->plots)
-            {
+            for (auto enemy: person->plots) {
                 std::cout << "\t" << enemy->name << std::endl;
             }
             std::cout << std::endl;

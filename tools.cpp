@@ -13,8 +13,7 @@
 
 bool exists(std::vector<Person *> v, std::string s)
 {
-    for (auto person : v)
-    {
+    for (auto person: v) {
         if (person->name == s)
             return true;
     }
@@ -26,26 +25,19 @@ void floydWarshall(std::vector<std::vector<int>> &A)
     int n = A.size();
 
     // Initialize A(i, j) to infinity for pairs of vertices not directly connected
-    for (int i = 0; i < n; i++)
-    {
-        for (int j = 0; j < n; j++)
-        {
-            if (i != j && A[i][j] == 0)
-            {
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            if (i != j && A[i][j] == 0) {
                 A[i][j] = INT_MAX;
             }
         }
     }
 
     // Apply the Floyd-Warshall algorithm
-    for (int k = 0; k < n; k++)
-    {
-        for (int i = 0; i < n; i++)
-        {
-            for (int j = 0; j < n; j++)
-            {
-                if (A[i][k] != INT_MAX && A[k][j] != INT_MAX)
-                {
+    for (int k = 0; k < n; k++) {
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (A[i][k] != INT_MAX && A[k][j] != INT_MAX) {
                     A[i][j] = std::min(A[i][j], A[i][k] + A[k][j]);
                 }
             }
@@ -61,46 +53,39 @@ int find_length_of_shortest_path_between_two_nodes_Person(Person *start, Person 
     bfsQueue.push({start, 0});
     visited.push_back(start);
 
-    while (!bfsQueue.empty())
-    {
+    while (!bfsQueue.empty()) {
         Person *current = bfsQueue.front().first;
         int distance = bfsQueue.front().second;
         bfsQueue.pop();
 
-        for (Person *friendNode : current->friends)
-        {
-            if (friendNode->name == end->name)
-            {
-                return distance + 1; // Found the target
+        for (Person *friendNode: current->friends) {
+            if (friendNode->name == end->name) {
+                return distance + 1;// Found the target
             }
 
-            if (std::find(visited.begin(), visited.end(), friendNode) == visited.end())
-            {
+            if (std::find(visited.begin(), visited.end(), friendNode) == visited.end()) {
                 bfsQueue.push({friendNode, distance + 1});
                 visited.push_back(friendNode);
             }
         }
     }
-    return -1; // If no path is found, return -1
+    return -1;// If no path is found, return -1
 }
 
 std::vector<Person *> create_graph(std::vector<std::string> file)
 {
     std::vector<Person *> friends;
 
-    for (auto line : file)
-    {
+    for (auto line: file) {
         std::string friend1 = line.substr(0, line.find(" is friends with "));
         std::string friend2 = line.substr(line.find(" is friends with ") + 17, line.length());
 
-        if (!exists(friends, friend1))
-        {
+        if (!exists(friends, friend1)) {
             Person *p = new Person();
             p->name = friend1;
             friends.push_back(p);
         }
-        if (!exists(friends, friend2))
-        {
+        if (!exists(friends, friend2)) {
             Person *p = new Person();
             p->name = friend2;
             friends.push_back(p);
@@ -108,8 +93,7 @@ std::vector<Person *> create_graph(std::vector<std::string> file)
         Person *p1 = nullptr;
         Person *p2 = nullptr;
 
-        for (auto &person : friends)
-        {
+        for (auto &person: friends) {
             if (person->name == friend1)
                 p1 = person;
             else if (person->name == friend2)
@@ -123,12 +107,10 @@ std::vector<Person *> create_graph(std::vector<std::string> file)
 
 void print_graph(std::vector<Person *> friends)
 {
-    for (auto person : friends)
-    {
+    for (auto person: friends) {
         std::cout << person->name << std::endl;
         std::cout << "friends: ";
-        for (auto friend_ : person->friends)
-        {
+        for (auto friend_: person->friends) {
             std::cout << friend_->name << ", ";
         }
         std::cout << std::endl;

@@ -9,14 +9,14 @@
 **
 */
 
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <vector>
 #include <algorithm>
+#include <climits>
+#include <fstream>
+#include <iostream>
 #include <iterator>
 #include <queue>
-#include <climits>
+#include <string>
+#include <vector>
 
 class Person
 {

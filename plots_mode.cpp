@@ -11,25 +11,45 @@
 
 #include "file.hpp"
 
-std::vector<std::vector<int>> fn_adjacent_matrix(std::vector<Person *> people)
+void contact_close_queen_friends(std::vector<std::vector<int>> plots, std::vector<std::vector<int>> friendships, uint16_t id_queen)
+{
+    for (int i = 0; i < friendships.size(); i++) {
+        if (friendships[i][id_queen] >= 1) {
+            // friend of queen
+            for (int j = 0; j < plots.size(); j++) {
+                if (plots[i][j] >= 1) {
+                    // enemy
+                    std::cout << "contact " << i << " to kill " << j << std::endl;
+                }
+            }
+        }
+    }
+}
+
+void save_queen_matrix(std::vector<std::vector<int>> plots, std::vector<std::vector<int>> friendships, uint16_t id_queen)
+{
+    for (auto &line: plots) {
+        if (line[id_queen] == 1) {
+            // kill him
+        }
+    }
+}
+
+std::vector<std::vector<int>> fn_adjacent_matrix(std::vector<Person *> people, bool plot)
 {
     std::vector<std::vector<int>> matrix;
-    for (auto &person : people)
-    {
+    for (auto &person: people) {
         std::vector<int> line;
-        for (auto &other_person : people)
-        {
+        for (auto &other_person: people) {
             bool is_friend_of_him = false;
-            for (auto &friend_of_him : person->friends)
-            {
-                if (other_person->name == friend_of_him->name)
-                {
+            std::vector<Person *> friend_or_plots = plot ? person->plots : person->friends;
+            for (auto &friend_of_him: friend_or_plots) {
+                if (other_person->name == friend_of_him->name) {
                     line.push_back(1);
                     is_friend_of_him = true;
                 }
             }
-            if (!is_friend_of_him)
-            {
+            if (!is_friend_of_him) {
                 line.push_back(0);
             }
         }
@@ -46,37 +66,30 @@ bool plots(int argc, char *argv[])
 
     std::vector<Person *> people = create_graph(file_friendship);
 
-    if (!fill_plots(people, file_conspiracies))
-    {
+    if (!fill_plots(people, file_conspiracies)) {
         std::cout << "error plot to unknown person\n";
         return false;
     }
 
     std::sort(people.begin(), people.end(), compareByName);
     print_names(people);
-
     std::cout << std::endl;
 
-    std::vector<std::vector<int>> matrix_adj = fn_adjacent_matrix(people);
-    //    print_relationships_matrix(matrix_adj, 2000);
-    floydWarshall(matrix_adj);
-    print_relationships_matrix(matrix_adj, max_length_of_friendship_paths);
+    std::vector<std::vector<int>> matrix_friendship = fn_adjacent_matrix(people, false);
+    std::vector<std::vector<int>> matrix_plot = fn_adjacent_matrix(people, true);
+    floydWarshall(matrix_friendship);
+    print_relationships_matrix(matrix_friendship, max_length_of_friendship_paths);
+//    print_relationships_matrix(matrix_plot, max_length_of_friendship_paths);
 
-    //    std::vector<std::vector<int>> matrix = create_matrix_from_relationships(people);
-    //    print_relationships_matrix(matrix, max_length_of_friendship_paths);
 
     Person *queen = nullptr;
-    for (auto &person : people)
-    {
+    for (auto &person: people) {
         if (person->name == QUEEN)
             queen = person;
     }
 
-    // stop_killing_queen(people, queen);
-
     // free memory
-    for (auto person : people)
-    {
+    for (auto person: people) {
         delete person;
     }
     return true;
