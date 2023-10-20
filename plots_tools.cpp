@@ -55,9 +55,9 @@ void print_relationships_matrix(std::vector<std::vector<int>> matrix)
     std::cout << "Relationships:\n";
     for (auto y: matrix) {
         for (int i = 0; i < y.size(); i++) {
-            // std::cout << "\033[1;31m" << y[i] << "\033[0m";
+            // std::cout << y[i];
             if (y[i] > 0)
-                std::cout << y[i];
+                std::cout << "\033[1;31m" << y[i] << "\033[0m";
             else
                 std::cout << "0";
             if (i + 1 != y.size())
