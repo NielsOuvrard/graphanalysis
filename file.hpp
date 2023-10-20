@@ -26,6 +26,8 @@ public:
     std::vector<Person *> plots;
 };
 
+// * tools
+
 bool exists(std::vector<Person *> v, std::string s);
 
 int find_length_of_shortest_path_between_two_nodes_Person(Person *start, Person *end);
@@ -36,6 +38,24 @@ void print_graph(std::vector<Person *> friends);
 
 std::vector<std::string> file_to_vector(std::string filename);
 
+void floydWarshall(std::vector<std::vector<int>> &A);
+
+// * modes
+
 bool plots(int argc, char *argv[]);
 
 bool links(int argc, char *argv[]);
+
+// * plots tools
+
+#define QUEEN "Cersei Lannister"
+
+bool compareByName(const Person *a, const Person *b);
+
+void print_names(std::vector<Person *> friends);
+
+void print_relationships_matrix(std::vector<std::vector<int>> matrix, int max_length_of_friendship_paths);
+
+bool fill_plots(std::vector<Person *> friends, std::vector<std::string> file_conspiracies);
+
+void prints_plots(std::vector<Person *> friends);
