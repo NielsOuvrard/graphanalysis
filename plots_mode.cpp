@@ -16,11 +16,11 @@
 bool contact_close_queen_friends(
         std::vector<std::vector<int>> matrix_plots,
         std::vector<std::vector<int>> friendships,
-        uint16_t id_queen,
-        uint16_t target,
+        int id_queen,
+        int target,
         std::vector<int> &attack,
         std::vector<int> visited,
-        uint16_t deep)
+        int deep)
 {
     if (deep > 3) {
         return false;
@@ -58,9 +58,9 @@ bool contact_close_queen_friends(
 void save_queen_matrix(
         std::vector<std::vector<int>> matrix_plots,
         std::vector<std::vector<int>> friendships,
-        uint16_t id_queen,
+        int id_queen,
         std::vector<std::vector<int>> &list_of_attacks,
-        uint16_t deep)
+        int deep)
 {
     for (int i = 0; i < matrix_plots.size(); i++) {
         if (matrix_plots[i][id_queen] >= 1 && friendships[i][id_queen] >= 1) {
