@@ -38,6 +38,8 @@ void print_graph(std::vector<Person *> friends);
 
 std::vector<std::string> file_to_vector(std::string filename);
 
+void check_inconsistent_content(std::vector<std::string> lines);
+
 void floydWarshall(std::vector<std::vector<int>> &A);
 
 // * modes
