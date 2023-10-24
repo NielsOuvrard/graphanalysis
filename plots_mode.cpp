@@ -29,7 +29,7 @@ bool contact_close_queen_friends(
         if (friendships[i][id_queen] == 1 && friendships[target][i] == 1) {
             // i = close friend
             // not to convince
-            std::cout << "not to convince : " << i << " to kill " << target << std::endl;
+            // std::cout << "not to convince : " << i << " to kill " << target << std::endl;
             attack.push_back(i);
             attack.push_back(target);
             return true;
