@@ -11,10 +11,10 @@
  - [ ] plots - shortest paths matrix: 1 / 5
 
 **Rigor**
- - [ ] inconsistent content
- - [ ] links- empty file
- - [ ] nonsensical argument
- - [ ] plots - empty file
+ - [x] inconsistent content
+ - [x] links- empty file
+ - [x] nonsensical argument # not sure
+ - [x] plots - empty file
 
 
 Game of Graphs is a C++ program that allows you to analyze friendship relations and conspiracy intentions within a group of people. It provides two main functionalities, which can be executed using the following command line options:
