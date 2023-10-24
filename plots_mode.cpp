@@ -42,7 +42,7 @@ bool contact_close_queen_friends(
             for (int j = 0; j < friendships.size(); j++) {
                 if (target != j && matrix_plots[i][j] == 1 && !VALUE_EXISTS(visited, j)) {
                     // j = "enemies" of "close friends" of "target"
-                    std::cout << j << " is enemy of " << target << " and deep = " << deep << std::endl;
+                    // std::cout << j << " is enemy of " << target << " and deep = " << deep << std::endl;
                     bool found = contact_close_queen_friends(matrix_plots, friendships, i, j, attack, visited, deep + 1);
                     attack.push_back(j);
                     if (found) {
@@ -75,7 +75,7 @@ void save_queen_matrix(
             std::vector<int> attack;
             std::vector<int> visited;
             visited.push_back(id_queen);
-            std::cout << "enemy of the queen : " << i << std::endl;
+            // std::cout << "enemy of the queen : " << i << std::endl;
             contact_close_queen_friends(matrix_plots, friendships, id_queen, i, attack, visited, deep);
             list_of_attacks.push_back(attack);
         }
@@ -152,7 +152,7 @@ bool plots(char *argv[])
     // no need n after this
 
     print_relationships_matrix(friendships);
-    print_relationships_matrix(matrix_plot);
+    // print_relationships_matrix(matrix_plot);
 
     std::cout << "Conspiracies:\n";
     std::vector<std::vector<int>> list_of_attacks;
