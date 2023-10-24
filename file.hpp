@@ -30,8 +30,6 @@ public:
 
 bool exists(std::vector<Person *> v, std::string s);
 
-int find_length_of_shortest_path_between_two_nodes_Person(Person *start, Person *end);
-
 std::vector<Person *> create_graph(std::vector<std::string> file);
 
 void print_graph(std::vector<Person *> friends);
