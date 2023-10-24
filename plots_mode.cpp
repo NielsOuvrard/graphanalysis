@@ -18,7 +18,7 @@ bool contact_close_queen_friends(
         std::vector<std::vector<int>> friendships,
         int id_queen,
         int target,
-        int n,
+        std::vector<int> visited,
         std::vector<int> &attack,
         int deep)
 {
