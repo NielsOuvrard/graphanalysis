@@ -59,3 +59,5 @@ void print_relationships_matrix(std::vector<std::vector<int>> matrix);
 bool fill_plots(std::vector<Person *> friends, std::vector<std::string> file_conspiracies);
 
 void prints_plots(std::vector<Person *> friends);
+
+std::vector<std::vector<int>> fn_adjacent_matrix(std::vector<Person *> people, bool plot_matrix);

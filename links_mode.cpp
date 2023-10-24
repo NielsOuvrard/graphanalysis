@@ -27,29 +27,41 @@ bool links(char *argv[])
     if (person1 == person2)
         return print_separation(person1, person2, 0);
 
-    std::vector<Person *> friends = create_graph(file);
+    std::vector<Person *> people = create_graph(file);
 
-    if (!exists(friends, person1) || !exists(friends, person2))
+    if (!exists(people, person1) || !exists(people, person2))
         return print_separation(person1, person2, -1);
 
+    std::sort(people.begin(), people.end(), compareByName);
     Person *start = nullptr;
-    for (auto person: friends) {
-        if (person->name == person1)
+    int id_start = 0;
+    for (auto person: people) {
+        if (person->name == person1) {
             start = person;
+            break;
+        }
+        id_start++;
     }
     Person *target = nullptr;
-    for (auto person: friends) {
-        if (person->name == person2)
+    int id_target = 0;
+    for (auto person: people) {
+        if (person->name == person2) {
             target = person;
+            break;
+        }
+        id_target++;
     }
     if (!start || !target)// impossible, checked before
         return false;
-    std::vector<std::string> visited;
-    int deep = find_length_of_shortest_path_between_two_nodes_Person(start, target);
-    print_separation(person1, person2, deep);
+
+
+    std::vector<std::vector<int>> friendships = fn_adjacent_matrix(people, false);
+    floydWarshall(friendships);
+
+    print_separation(person1, person2, friendships[id_start][id_target]);
 
     // free memory
-    for (auto person: friends) {
+    for (auto person: people) {
         delete person;
     }
     return true;
