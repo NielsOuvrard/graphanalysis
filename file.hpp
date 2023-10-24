@@ -30,8 +30,6 @@ public:
 
 bool exists(std::vector<Person *> v, std::string s);
 
-int find_length_of_shortest_path_between_two_nodes_Person(Person *start, Person *end);
-
 std::vector<Person *> create_graph(std::vector<std::string> file);
 
 void print_graph(std::vector<Person *> friends);
@@ -61,3 +59,5 @@ void print_relationships_matrix(std::vector<std::vector<int>> matrix);
 bool fill_plots(std::vector<Person *> friends, std::vector<std::string> file_conspiracies);
 
 void prints_plots(std::vector<Person *> friends);
+
+std::vector<std::vector<int>> fn_adjacent_matrix(std::vector<Person *> people, bool plot_matrix);

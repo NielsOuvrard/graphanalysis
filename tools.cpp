@@ -45,33 +45,6 @@ void floydWarshall(std::vector<std::vector<int>> &A)
     }
 }
 
-int find_length_of_shortest_path_between_two_nodes_Person(Person *start, Person *end)
-{
-    std::queue<std::pair<Person *, int>> bfsQueue;
-    std::vector<Person *> visited;
-
-    bfsQueue.push({start, 0});
-    visited.push_back(start);
-
-    while (!bfsQueue.empty()) {
-        Person *current = bfsQueue.front().first;
-        int distance = bfsQueue.front().second;
-        bfsQueue.pop();
-
-        for (Person *friendNode: current->friends) {
-            if (friendNode->name == end->name) {
-                return distance + 1;// Found the target
-            }
-
-            if (std::find(visited.begin(), visited.end(), friendNode) == visited.end()) {
-                bfsQueue.push({friendNode, distance + 1});
-                visited.push_back(friendNode);
-            }
-        }
-    }
-    return -1;// If no path is found, return -1
-}
-
 std::vector<Person *> create_graph(std::vector<std::string> file)
 {
     std::vector<Person *> friends;
@@ -117,3 +90,22 @@ void print_graph(std::vector<Person *> friends)
         std::cout << std::endl;
     }
 }
+
+//links - intermediate:
+//    Passed: 100.0 %
+//    Crashed: 0.0 %
+//    optimization:
+//    Passed: 50.0 %. # done probably
+//                    Crashed: 50.0 %
+//    optimization (eval): # done probably
+//                         Passed: 0.0 %
+//                         Crashed: 100.0 %
+//                         plots - conspiracies:
+//    Passed: 0.0 %
+//    Crashed: 0.0 %
+//    plots - parsing:
+//    Passed: 25.0 %
+//    Crashed: 75.0 %
+//    plots - shortest paths matrix:
+//    Passed: 20.0 %
+//    Crashed: 80.0 %
