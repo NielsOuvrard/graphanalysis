@@ -29,6 +29,12 @@ std::vector<std::string> file_to_vector(std::string filename)
         exit(84);
     }
 
+    // Check if the file is empty
+    if (inputFile.peek() == std::ifstream::traits_type::eof()) {
+        std::cerr << "File is empty." << std::endl;
+        exit(84);
+    }
+
     // Create a vector to store the lines from the file
     std::vector<std::string> lines;
 
@@ -38,9 +44,23 @@ std::vector<std::string> file_to_vector(std::string filename)
         lines.push_back(line);
     }
 
+    // Check if the file is inconsistent by patern matching the lines
+    check_inconsistent_content(lines);
+
     // Close the file
     inputFile.close();
     return lines;
+}
+
+void check_inconsistent_content(std::vector<std::string> lines)
+{
+    for (std::string line : lines) {
+        if (line.find("is friends with") == std::string::npos && line.find("is plotting against") == std::string::npos) {
+            std::cerr << "File is inconsistent." << std::endl;
+            exit(84);
+        }
+    }
+    return;
 }
 
 // error handling
@@ -79,6 +99,25 @@ int main(int argc, char **argv)
         return 84;
     }
 
+    std::string arg2(argv[2]);
+    if (arg2.empty()) {
+        std::cerr << "Error: argument 2 is not a valid string." << std::endl;
+        exit(84);
+    }
+
+    std::string arg3(argv[3]);
+    if (arg3.empty()) {
+        std::cerr << "Error: argument 3 is not a valid string." << std::endl;
+        exit(84);
+    }
+
+    try {
+        int arg4 = std::stoi(argv[4]);
+    }
+    catch (const std::invalid_argument& e) {
+        std::cerr << "Error: argument 4 is not a valid integer." << std::endl;
+        exit(84);
+    }
     if (std::string(argv[1]) == "--links") {
         return links(argv) ? 0 : 84;
     }
