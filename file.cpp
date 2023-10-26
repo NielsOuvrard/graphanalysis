@@ -55,7 +55,7 @@ std::vector<std::string> file_to_vector(std::string filename)
 
 void check_inconsistent_content(std::vector<std::string> lines)
 {
-    for (std::string line : lines) {
+    for (std::string line: lines) {
         if (line.find("is friends with") == std::string::npos && line.find("is plotting against") == std::string::npos) {
             std::cerr << "File is inconsistent." << std::endl;
             exit(84);
@@ -112,11 +112,11 @@ int main(int argc, char **argv)
     //     exit(84);
     // }
 
-    int n = std::stoi(argv[4]);
-    if (n < 0) {
-        std::cerr << "Error: argument 4 must be a positive integer." << std::endl;
-        exit(84);
-    }
+    // int n = std::stoi(argv[4]);
+    // if (n < 0) {
+    //     std::cerr << "Error: argument 4 must be a positive integer." << std::endl;
+    //     exit(84);
+    // }
 
 
     if (std::string(argv[1]) == "--links") {
