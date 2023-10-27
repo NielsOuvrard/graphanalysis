@@ -71,6 +71,9 @@ void print_relationships_matrix(std::vector<std::vector<int>> matrix)
 bool fill_plots(std::vector<Person *> friends, std::vector<std::string> file_conspiracies)
 {
     for (auto &line: file_conspiracies) {
+        if (line == "" || line == "\n")
+            return true;
+        std::cout << "|" << line << "|" << std::endl;
         std::string enemy1 = line.substr(0, line.find(" is plotting against "));
         std::string enemy2 = line.substr(line.find(" is plotting against ") + 21, line.length());
 
