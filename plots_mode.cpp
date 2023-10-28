@@ -245,11 +245,8 @@ std::vector<std::vector<int>> fn_adjacent_matrix(std::vector<Person *> all_peopl
 
 bool plots(char *argv[])
 {
-    std::vector<std::string> file_friendship = file_to_vector(argv[2]);
-    if (file_friendship.empty()) {
-        std::cout << "error: friendship file is empty" << std::endl;
-        return false;
-    }
+    // std::vector<Person *>
+    people = create_graph(argv[2]);
     std::vector<std::string> file_conspiracies = file_to_vector(argv[3]);
     int n;
     try {
@@ -263,8 +260,6 @@ bool plots(char *argv[])
         return false;
     }
 
-    //std::vector<Person *>
-    people = create_graph(file_friendship);
 
     if (!fill_plots(people, file_conspiracies)) {
         std::cout << "error plot to unknown person\n";

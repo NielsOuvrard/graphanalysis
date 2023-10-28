@@ -28,15 +28,14 @@ public:
 
 // * tools
 
-bool exists(std::vector<Person *> v, std::string s);
+Person *exists_person(std::vector<Person *> v, std::string s);
 
-std::vector<Person *> create_graph(std::vector<std::string> file);
+std::vector<Person *> create_graph(std::string filename);
 
 void print_graph(std::vector<Person *> friends);
 
 std::vector<std::string> file_to_vector(std::string filename);
 
-void check_inconsistent_content(std::vector<std::string> lines);
 
 void floydWarshall(std::vector<std::vector<int>> &A);
 

@@ -45,11 +45,24 @@ void floydWarshall(std::vector<std::vector<int>> &A)
     }
 }
 
-std::vector<Person *> create_graph(std::vector<std::string> file)
+std::vector<Person *> create_graph(std::string filename)
 {
-    std::vector<Person *> friends;
+    if (filename.empty()) {
+        std::cerr << "Error: argument is not a valid string." << std::endl;
+        exit(84);
+    }
+    std::ifstream inputFile(filename);
 
-    for (auto line: file) {
+    // Check if the file was successfully opened
+    if (!inputFile.is_open()) {
+        std::cerr << "Failed to open the file." << std::endl;
+        exit(84);
+    }
+
+    // Read lines from the file and store them in the vector
+    std::vector<Person *> friends;
+    std::string line;
+    while (std::getline(inputFile, line)) {
         size_t pos = line.find(" is friends with ");
         if (pos == std::string::npos) {
             std::cerr << "File is inconsistent." << std::endl;
@@ -58,27 +71,30 @@ std::vector<Person *> create_graph(std::vector<std::string> file)
         std::string friend1 = line.substr(0, line.find(" is friends with "));
         std::string friend2 = line.substr(line.find(" is friends with ") + 17, line.length());
 
-        if (!exists(friends, friend1)) {
+        // Check if friend1 and friend2 exist in the 'friends' container
+        Person *p1 = exists_person(friends, friend1);
+        if (!p1) {
+            // If friend1 doesn't exist, create a new Person object for friend1
             Person *p = new Person();
             p->name = friend1;
+            p1 = p;
             friends.push_back(p);
         }
-        if (!exists(friends, friend2)) {
+
+        Person *p2 = exists_person(friends, friend2);
+        if (!p2) {
+            // If friend2 doesn't exist, create a new Person object for friend2
             Person *p = new Person();
             p->name = friend2;
+            p2 = p;
             friends.push_back(p);
-        }
-        Person *p1 = nullptr;
-        Person *p2 = nullptr;
-
-        for (auto &person: friends) {
-            if (person->name == friend1)
-                p1 = person;
-            else if (person->name == friend2)
-                p2 = person;
         }
         p1->friends.push_back(p2);
         p2->friends.push_back(p1);
+    }
+    if (friends.empty()) {
+        std::cerr << "Error: no person found." << std::endl;
+        exit(84);
     }
     return friends;
 }
