@@ -73,6 +73,12 @@ bool fill_plots(std::vector<Person *> friends, std::vector<std::string> file_con
     for (auto &line: file_conspiracies) {
         if (line == "" || line == "\n")
             return true;
+
+        size_t pos = line.find(" is plotting against ");
+        if (pos == std::string::npos) {
+            std::cerr << "File is inconsistent." << std::endl;
+            exit(84);
+        }
         std::string enemy1 = line.substr(0, line.find(" is plotting against "));
         std::string enemy2 = line.substr(line.find(" is plotting against ") + 21, line.length());
 

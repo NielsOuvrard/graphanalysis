@@ -50,6 +50,11 @@ std::vector<Person *> create_graph(std::vector<std::string> file)
     std::vector<Person *> friends;
 
     for (auto line: file) {
+        size_t pos = line.find(" is friends with ");
+        if (pos == std::string::npos) {
+            std::cerr << "File is inconsistent." << std::endl;
+            exit(84);
+        }
         std::string friend1 = line.substr(0, line.find(" is friends with "));
         std::string friend2 = line.substr(line.find(" is friends with ") + 17, line.length());
 
@@ -90,22 +95,3 @@ void print_graph(std::vector<Person *> friends)
         std::cout << std::endl;
     }
 }
-
-//links - intermediate:
-//    Passed: 100.0 %
-//    Crashed: 0.0 %
-//    optimization:
-//    Passed: 50.0 %. # done probably
-//                    Crashed: 50.0 %
-//    optimization (eval): # done probably
-//                         Passed: 0.0 %
-//                         Crashed: 100.0 %
-//                         plots - conspiracies:
-//    Passed: 0.0 %
-//    Crashed: 0.0 %
-//    plots - parsing:
-//    Passed: 25.0 %
-//    Crashed: 75.0 %
-//    plots - shortest paths matrix:
-//    Passed: 20.0 %
-//    Crashed: 80.0 %
