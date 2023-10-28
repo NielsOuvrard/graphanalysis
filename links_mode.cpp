@@ -20,6 +20,10 @@ bool print_separation(std::string person1, std::string person2, int deep)
 bool links(char *argv[])
 {
     std::vector<std::string> file = file_to_vector(argv[2]);
+    if (file.empty()) {
+        std::cout << "error: friendship file is empty" << std::endl;
+        return false;
+    }
     std::string person1 = argv[3];
     std::string person2 = argv[4];
 

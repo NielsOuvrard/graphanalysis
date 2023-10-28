@@ -246,6 +246,10 @@ std::vector<std::vector<int>> fn_adjacent_matrix(std::vector<Person *> all_peopl
 bool plots(char *argv[])
 {
     std::vector<std::string> file_friendship = file_to_vector(argv[2]);
+    if (file_friendship.empty()) {
+        std::cout << "error: friendship file is empty" << std::endl;
+        return false;
+    }
     std::vector<std::string> file_conspiracies = file_to_vector(argv[3]);
     int n;
     try {

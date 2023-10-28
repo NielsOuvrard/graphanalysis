@@ -33,14 +33,6 @@ std::vector<std::string> file_to_vector(std::string filename)
         exit(84);
     }
 
-
-    // Check if the file is empty
-    // check if complot file is empty dont look into is normal
-    // if (inputFile.peek() == std::ifstream::traits_type::eof()) {
-    //     std::cerr << "File is empty." << std::endl;
-    //     exit(84);
-    // }
-
     // Create a vector to store the lines from the file
     std::vector<std::string> lines;
 
@@ -50,23 +42,9 @@ std::vector<std::string> file_to_vector(std::string filename)
         lines.push_back(line);
     }
 
-    // Check if the file is inconsistent by patern matching the lines
-    // check_inconsistent_content(lines);
-
     // Close the file
     inputFile.close();
     return lines;
-}
-
-void check_inconsistent_content(std::vector<std::string> lines)
-{
-    for (std::string line: lines) {
-        if (line.find("is friends with") == std::string::npos && line.find("is plotting against") == std::string::npos) {
-            std::cerr << "File is inconsistent." << std::endl;
-            exit(84);
-        }
-    }
-    return;
 }
 
 // error handling
