@@ -21,6 +21,10 @@
 
 std::vector<std::string> file_to_vector(std::string filename)
 {
+    if (filename.empty()) {
+        std::cerr << "Error: argument is not a valid string." << std::endl;
+        exit(84);
+    }
     std::ifstream inputFile(filename);
 
     // Check if the file was successfully opened
@@ -28,6 +32,7 @@ std::vector<std::string> file_to_vector(std::string filename)
         std::cerr << "Failed to open the file." << std::endl;
         exit(84);
     }
+
 
     // Check if the file is empty
     // check if complot file is empty dont look into is normal
@@ -99,25 +104,6 @@ int main(int argc, char **argv)
         std::cerr << "Invalid number of arguments" << std::endl;
         return 84;
     }
-
-    // std::string arg2(argv[2]);
-    // if (arg2.empty()) {
-    //     std::cerr << "Error: argument 2 is not a valid string." << std::endl;
-    //     exit(84);
-    // }
-
-    // std::string arg3(argv[3]);
-    // if (arg3.empty()) {
-    //     std::cerr << "Error: argument 3 is not a valid string." << std::endl;
-    //     exit(84);
-    // }
-
-    // int n = std::stoi(argv[4]);
-    // if (n < 0) {
-    //     std::cerr << "Error: argument 4 must be a positive integer." << std::endl;
-    //     exit(84);
-    // }
-
 
     if (std::string(argv[1]) == "--links") {
         return links(argv) ? 0 : 84;
