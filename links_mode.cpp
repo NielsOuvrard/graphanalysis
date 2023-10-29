@@ -27,6 +27,14 @@ Person *exists_person(std::vector<Person *> v, std::string s)
     return nullptr;
 }
 
+void check_empty(std::ifstream &inputFile)
+{
+    if (inputFile.peek() == std::ifstream::traits_type::eof()) {
+        std::cerr << "File is empty." << std::endl;
+        exit(84);
+    }
+}
+
 std::vector<Person *> create_graph_and_find(std::string filename, Person **start, Person **target, std::string person1, std::string person2)
 {
     if (filename.empty()) {
@@ -40,7 +48,7 @@ std::vector<Person *> create_graph_and_find(std::string filename, Person **start
         std::cerr << "Failed to open the file." << std::endl;
         exit(84);
     }
-
+    check_empty(inputFile);
     // Read lines from the file and store them in the vector
     std::vector<Person *> friends;
     std::string line;
