@@ -11,14 +11,6 @@
 
 #include "file.hpp"
 
-//  friendships report (FR)
-//  conspiracy report (CR)
-
-// “Links” mode: it will take one file (FR) and two people as input, and displays the degree of separation
-// of these people (or -1 if they are not connected).
-
-// ./game_of_graphs --links friends_example "Vere" "Cersei Lannister"
-
 std::vector<std::string> file_to_vector(std::string filename)
 {
     if (filename.empty()) {
@@ -46,18 +38,6 @@ std::vector<std::string> file_to_vector(std::string filename)
     inputFile.close();
     return lines;
 }
-
-// error handling
-// file plot in frendship report
-// no file
-// person does not exist, queen does not exist
-// is friend with himself
-// no "is friend with" or "is plotting with"
-// if everyone in plot file exists in friendship file
-
-// inconsistent content
-// links - empty file
-// plots - empty file
 
 void help(void)
 {

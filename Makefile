@@ -2,7 +2,7 @@
 ## Makefile for cpp
 ##
 
-SRC = *.cpp
+SRC = src/*.cpp
 
 NAME = game_of_graphs
 

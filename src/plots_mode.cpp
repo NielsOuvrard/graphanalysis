@@ -39,106 +39,24 @@ bool contact_close_queen_friends(
         std::vector<int> &attack,
         int deep)
 {
-    if (deep > 10) {
-        return false;
-    }
-    // queen = Tom
-    // target = Elon
-
-    // joris -> Elon
-    // Tom -> Thomas
-
-    //    Joris->Elon->Tom->Thomas
-    // std::cout
-    //         << " - - QUEEN \033[1;32m"
-    //         << people[id_queen]->name
-    //         << "\033[0m - target \033[1;32m"
-    //         << people[target]->name
-    //         << "\033[0m"
-    //         << std::endl;
-
-
-    //    for (auto &vis: visited) {
-    //        std::cout << " # " << people[vis]->name;
-    //    }
-    //    std::cout << std::endl;
-
-    // The Mountain -> Jon Snow -> Theon Greyjoy -> Sansa Stark
-
-    // ! foreach friend of queen, plotting against the target
     for (int i = 0; i < friendships.size(); i++) {
-        // a close friend can kill target ?
-        // std::cout << " \t" << people[i]->name;
-        // std::cout << " f[i][target] = " << friendships[target][i] << std::endl;
-        if (i != id_queen && i != target && !VALUE_EXISTS(visited, i)
-            // ! here, fix D -> A : we didn't create plot, just active an kill plot && friendships[id_queen][i] >= 0
-            // ! && friendships[target][i] >= 1 // no because  Tywin Lannister kill Daenerys Targaryen
-            //            && friendships[id_queen][i] >= 1 // break everything, didn't work with QUEEN C - target D
-            && (friendships[id_official_queen][i] >= 1 || i == id_official_queen)// only friend of the official queen, or be the official queen
-            //&& matrix_plots[i][id_queen] == 0                                    // not sure
-            && matrix_plots[i][target] == 1// working with C kill B
-        ) {                                // friendships[id_queen][i] >= 1 &&
-                                           // ! tell him to kill
-                                           // i = close friend
-                                           // ? not to convince
-            // std::cout << " - - - \033[1;32m"
-            //           << people[i]->name
-            //           << "\033[0m is a common friend of target \033[1;32m"
-            //           << people[target]->name
-            //           << "\033[0m and a common friend of queen \033[1;32m"
-            //           << people[id_queen]->name
-            //           << "\033[0m"
-            //           << std::endl;
+        if (i != id_queen && i != target && !VALUE_EXISTS(visited, i) && (friendships[id_official_queen][i] >= 1 || i == id_official_queen) && matrix_plots[i][target] == 1) {
             attack.push_back(i);
             attack.push_back(target);
-
-            //            std::cout << " # " << deep << std::endl;
-            //            for (auto &ata: attack) {
-            //                std::cout << " # " << people[ata]->name;
-            //            }
             return true;
         }
     }
-    // if not, plotting against "enemies" of "close friends" of "target"
-    // ! foreach friend of target
+
     for (int i = 0; i < friendships.size(); i++) {
-        //        if (!VALUE_EXISTS(visited, i) && i != target && friendships[target][i] >= 0) { // !  >= 0 ?!
-
         if (!VALUE_EXISTS(visited, i) && i != target && friendships[target][i] > 0) {
-            // i = "close friends" of "target"
-            // std::cout
-            //         << "\033[1;32m"
-            //         << people[i]->name
-            //         << "\033[0m is a close friend of \033[1;32m"
-            //         << people[target]->name
-            //         << "\033[0m = "
-            //         << friendships[target][i]
-            //         << std::endl;
-            // ! foreach "enemies" of "close friends" of "target"
-            // std::cout << "who is plotting agains " << people[i]->name << " ? \n";
             for (int j = 0; j < friendships.size(); j++) {
-                // std::cout << matrix_plots[j][i] << " is plotting agains " << people[j]->name << " ! " << std::endl;
                 if (!VALUE_EXISTS(visited, j) && target != j && i != j && matrix_plots[j][i] == 1 && j != id_official_queen && i != id_official_queen) {
-                    // j = "enemies" of "close friends" of "target"
-                    // std::cout
-                    //         << " - \033[1;32m"
-                    //         << people[j]->name// Elon
-                    //         << "\033[1;31m want to kill \033[1;32m"
-                    //         << people[i]->name// Tom
-                    //         << "\033[0m and deep = \033[1;31m"
-                    //         << deep
-                    //         << "\033[0m"
-                    //         << std::endl;
                     visited.push_back(target);
-
                     bool found = contact_close_queen_friends(matrix_plots, friendships, i, j, visited, attack, deep + 1);
                     if (found) {
                         attack.push_back(i);
                         attack.push_back(target);
                         return true;
-                    }
-                    else {
-                        //                        std::cout << " - \033[1;31m echec\n";
                     }
                 }
             }
@@ -156,28 +74,18 @@ bool save_queen_matrix(
 {
     std::vector<int> enemy_visited;
     bool success = true;
-    // ! for each enemy of the queen
+
     for (int i = 0; i < matrix_plots.size(); i++) {
-        //        if (matrix_plots[i][id_queen] == 1 && friendships[i][id_queen] == 1) {
-        //            // ! if enemy is friend with queen
-        //            std::vector<int> attack;
-        //            attack.push_back(id_queen);
-        //            attack.push_back(i);
-        //            list_of_attacks.push_back(attack);
-        //        } else
         if (matrix_plots[i][id_queen] == 1) {
-            // ! i = enemy of the queen
+
             std::vector<int> attack;
             std::vector<int> visited;
             for (auto &enemy: enemy_visited) {
                 visited.push_back(enemy);
             }
-            //            visited.push_back(id_queen);
-            //            std::cout << "enemy of the queen : " << people[i]->name << " - " << people[id_queen]->name << std::endl;
-            //            std::cout << "visited : " << (enemy_visited.size() > 0 ? enemy_visited.back() : -1) << std::endl;
             bool success_local = contact_close_queen_friends(matrix_plots, friendships, id_queen, i, visited, attack, deep);
             if (!success_local) {
-                //                std::sort(list_of_attacks.begin(), list_of_attacks.end(), compareBySize);
+
                 for (auto &attack: list_of_attacks) {
                     for (int i = 0; i < attack.size(); i++) {
                         std::cout << people[attack[i]]->name;
@@ -191,23 +99,11 @@ bool save_queen_matrix(
                 std::cout << "\n\nResult:\nThere is only one way out: treason !\n";
                 return false;
             }
-
-            //            for (auto &ata: attack) {
-            //                std::cout << " # " << people[ata]->name << std::endl;
-            //            }
-
             list_of_attacks.push_back(attack);
-
-            // ! this enemy is dead
-            // enemy_visited.push_back(i);// ? maybe not this, maybe someone who plot to queen can not change mind
-            // ? maybe begin by check nearest killer
         }
     }
     return true;
 }
-//Jon Snow -> Tywin Lannister
-//Theon Greyjoy -> Sansa Stark
-//Theon Greyjoy -> Sansa Stark -> Cersei Lannister -> Daenerys Targaryen
 
 
 void trunc_matrix(std::vector<std::vector<int>> &matrix, int n)
@@ -245,7 +141,7 @@ std::vector<std::vector<int>> fn_adjacent_matrix(std::vector<Person *> all_peopl
 
 bool plots(char *argv[])
 {
-    // std::vector<Person *>
+
     people = create_graph(argv[2]);
     std::vector<std::string> file_conspiracies = file_to_vector(argv[3]);
     int n;
@@ -274,10 +170,13 @@ bool plots(char *argv[])
     std::vector<std::vector<int>> matrix_plot = fn_adjacent_matrix(people, true);
     floydWarshall(friendships);
     trunc_matrix(friendships, n);
-    // no need n after this
 
-    print_relationships_matrix(friendships);
-    // print_relationships_matrix(matrix_plot);
+    std::cout << "Relationships:\n";
+    print_relations_matrix(friendships);
+
+    std::cout << "Plots:\n";
+    print_relations_matrix(matrix_plot);
+
 
     int id_queen = 0;
     for (auto &person: people) {
@@ -293,9 +192,8 @@ bool plots(char *argv[])
     bool success = save_queen_matrix(matrix_plot, friendships, id_queen, list_of_attacks, 0);
     if (!success)
         return true;
-    // TODO :
-    // You must display the chain of treason that results on saving the Queen, sorted from the shortest to the
-    // longest chains. For each chain of same length, you must display them in alphabetical order.
+
+
     std::sort(list_of_attacks.begin(), list_of_attacks.end(), compareBySize);
     for (auto &attack: list_of_attacks) {
         for (int i = 0; i < attack.size(); i++) {
@@ -309,11 +207,8 @@ bool plots(char *argv[])
 
     std::cout << "\nResult:\n";
     std::cout << "The Crown is safe !\n";
-    //    std::cout << "No conspiracy possible against ";
-    // std::cout << "There is only one way out: treason !\n";
 
 
-    // free memory
     for (auto person: people) {
         delete person;
     }

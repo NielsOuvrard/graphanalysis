@@ -1,8 +1,6 @@
 *.dSYM
-*_example
 game_of_graphs
 .vscode
 old_work_graph
-friends_example_2
 .idea
-plots_example_2
+.DS_Store

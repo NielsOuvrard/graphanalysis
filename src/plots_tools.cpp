@@ -50,9 +50,8 @@ void print_names(std::vector<Person *> friends)
     }
 }
 
-void print_relationships_matrix(std::vector<std::vector<int>> matrix)
+void print_relations_matrix(std::vector<std::vector<int>> matrix)
 {
-    std::cout << "Relationships:\n";
     for (auto y: matrix) {
         for (int i = 0; i < y.size(); i++) {
             // std::cout << "\033[1;31m" << y[i] << "\033[0m";
